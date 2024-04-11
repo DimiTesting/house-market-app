@@ -1,8 +1,72 @@
+import {useState} from "react"
+import {Link, useNavigate} from "react-router-dom"
+import {ReactComponent as ArrowRigthIcon} from "../assets/svg/keyboardArrowRightIcon.svg"
+import visibilityIcon from "../assets/svg/visibilityIcon.svg"
+import { getAuth, createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import {db} from "../firebase.config"
+
+
 function SignUp() {
+
+    const [showPassword, setShowPassword] = useState(false)
+    const [formData, setFormData] = useState({
+        name:"",
+        email: "",
+        password: ""
+    })
+
+    const {name, email, password} = formData
+
+    const navigate = useNavigate()
+
+    function OnChange(e) {
+        setFormData((prevState)=> ({
+            ...prevState,
+            [e.target.id]: e.target.value
+        })
+    )}
+
+    const handleSumbit = async (e) => {
+        e.preventDefault()
+        try {
+            const auth = getAuth();
+            const userCreditial = await createUserWithEmailAndPassword(auth, email, password)
+            const user = userCreditial.user
+            updateProfile(auth.currentUser, {
+                displayName: name
+            })
+        } catch (error) {
+            console.log(error)
+        }
+        navigate("/")
+    }
+
     return (
-        <div>
-            <h1> Sign-up </h1>
+        <>
+        <div className="pageContainer">
+            <header> 
+                <p className="pageHeader"> Welcome back </p> 
+            </header>
+            
+            <form onSubmit={handleSumbit}>
+                <input type="name" className="nameInput" placeholder="Name" id="name" value={name} onChange={OnChange}/> 
+                <input type="email" className="emailInput" placeholder="Email" id="email" value={email} onChange={OnChange}/> 
+                <div className="passwordInputDiv">
+                    <input type={showPassword? 'text': 'password'} className="passwordInput" placeholder="Password" id="password" value={password} onChange={OnChange}/> 
+                    <img className="showPassword" src={visibilityIcon} alt="show password" onClick={()=> setShowPassword((prevState) => !prevState)}/>
+                </div>
+                <Link to="/forgotPassword" className="forgotPasswordLink"> Forgot Password </Link>
+                <div className="signUpBar">
+                    <p className="signUpText">Sign In</p>
+                    <button className="signUpButton">
+                        <ArrowRigthIcon fill="#ffffff" width="34px" height="34px"/>
+                    </button>
+                </div>
+            </form>
+
+            <Link to="/sign-in" className="registerLink"> Sign-in instead </Link>
         </div>
+        </>
     )
 }
 
