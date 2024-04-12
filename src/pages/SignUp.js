@@ -4,6 +4,7 @@ import {ReactComponent as ArrowRigthIcon} from "../assets/svg/keyboardArrowRight
 import visibilityIcon from "../assets/svg/visibilityIcon.svg"
 import { getAuth, createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import {db} from "../firebase.config"
+import { doc, setDoc, serverTimestamp } from "firebase/firestore";
 
 
 function SignUp() {
@@ -35,6 +36,13 @@ function SignUp() {
             updateProfile(auth.currentUser, {
                 displayName: name
             })
+
+            const formDataCopy = {...formData}
+            delete formDataCopy.password
+            const timeStamp = serverTimestamp()
+            formDataCopy.timeStamp = timeStamp
+            await setDoc(doc(db, 'users', user.uid), formDataCopy)
+
         } catch (error) {
             console.log(error)
         }
@@ -57,7 +65,7 @@ function SignUp() {
                 </div>
                 <Link to="/forgotPassword" className="forgotPasswordLink"> Forgot Password </Link>
                 <div className="signUpBar">
-                    <p className="signUpText">Sign In</p>
+                    <p className="signUpText">Sign Up</p>
                     <button className="signUpButton">
                         <ArrowRigthIcon fill="#ffffff" width="34px" height="34px"/>
                     </button>
