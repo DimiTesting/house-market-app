@@ -3,6 +3,7 @@ import {Link, useNavigate} from "react-router-dom"
 import {ReactComponent as ArrowRigthIcon} from "../assets/svg/keyboardArrowRightIcon.svg"
 import visibilityIcon from "../assets/svg/visibilityIcon.svg"
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth"
+import { toast } from "react-toastify"
 
 function SignIn() {
 
@@ -34,7 +35,7 @@ function SignIn() {
             }
             
         } catch (error) {
-            console.log(error)
+            toast("Bad credentials")
         }
     }
 
