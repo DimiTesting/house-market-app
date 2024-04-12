@@ -1,7 +1,8 @@
 import {useState} from "react"
-import {Link} from "react-router-dom"
+import {Link, useNavigate} from "react-router-dom"
 import {ReactComponent as ArrowRigthIcon} from "../assets/svg/keyboardArrowRightIcon.svg"
 import visibilityIcon from "../assets/svg/visibilityIcon.svg"
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth"
 
 function SignIn() {
 
@@ -13,12 +14,29 @@ function SignIn() {
 
     const {email, password} = formData
 
+    const navigate = useNavigate()
+
     function OnChange(e) {
         setFormData((prevState)=> ({
             ...prevState,
             [e.target.id]: e.target.value
         })
     )}
+
+    const handleSubmit = async (e) => {
+        e.preventDefault()
+
+        try {
+            const auth = getAuth()
+            const userCreditial = await signInWithEmailAndPassword(auth, email, password)
+            if (userCreditial.user) {
+                navigate("/profile")
+            }
+            
+        } catch (error) {
+            console.log(error)
+        }
+    }
 
     return (
         <>
@@ -27,7 +45,7 @@ function SignIn() {
                 <p className="pageHeader"> Welcome back </p> 
             </header>
             
-            <form>
+            <form onSubmit={handleSubmit}>
                 <input type="email" className="emailInput" placeholder="Email" id="email" value={email} onChange={OnChange}/> 
                 <div className="passwordInputDiv">
                     <input type={showPassword? 'text': 'password'} className="passwordInput" placeholder="Password" id="password" value={password} onChange={OnChange}/> 
