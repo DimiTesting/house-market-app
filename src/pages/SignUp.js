@@ -46,6 +46,7 @@ function SignUp() {
             navigate("/")
 
         } catch (error) {
+            console.log(error)
             toast("Something wrong with the Registration form")
         }
         
@@ -55,7 +56,7 @@ function SignUp() {
         <>
         <div className="pageContainer">
             <header> 
-                <p className="pageHeader"> Welcome back </p> 
+                <p className="pageHeader"> Register </p> 
             </header>
             
             <form onSubmit={handleSumbit}>
