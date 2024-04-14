@@ -4,6 +4,7 @@ import {ReactComponent as ArrowRigthIcon} from "../assets/svg/keyboardArrowRight
 import visibilityIcon from "../assets/svg/visibilityIcon.svg"
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth"
 import { toast } from "react-toastify"
+import Oauth from "../components/Oauth"
 
 function SignIn() {
 
@@ -60,6 +61,8 @@ function SignIn() {
                     </button>
                 </div>
             </form>
+
+            <Oauth/>
 
             <Link to="/sign-up" className="registerLink"> Sign-up instead </Link>
 
