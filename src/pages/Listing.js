@@ -1,6 +1,7 @@
 import { db } from "../firebase.config"
 import { useState, useEffect } from "react"
 import { useNavigate, useParams } from "react-router-dom"
+import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet'
 import { doc, getDoc } from "firebase/firestore"
 import ShareLinkIcon from "../assets/svg/shareIcon.svg"
 import Spinner from "../components/Spinner"
@@ -24,7 +25,6 @@ function Listing() {
             const docSnap = await getDoc(docRef)
 
             if (docSnap.exists()) {
-                console.log(docSnap.data())
                 setListing(docSnap.data())
                 setLoading(false)
             }
@@ -89,7 +89,25 @@ function Listing() {
 
                 <p className='listingLocationTitle'>Location</p>
 
-                
+                <div className='leafletContainer'>
+                    <MapContainer
+                        style={{ height: '100%', width: '100%' }}
+                        center={[listing.latitude, listing.longitude]}
+                        zoom={13}
+                        scrollWheelZoom={false}
+                    >
+                        <TileLayer
+                        attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                        url='https://{s}.tile.openstreetmap.de/tiles/osmde/{z}/{x}/{y}.png'
+                        />
+
+                        <Marker
+                        position={[listing.latitude, listing.longitude]}
+                        >
+                        <Popup>{listing.address}</Popup>
+                        </Marker>
+                    </MapContainer>
+                </div>
 
                 {auth.currentUser?.uid !== listing.userRef && (
                     <Link to={`/contact/${listing.userRef}?listingName=${listing.name}`} className="primaryButton">
