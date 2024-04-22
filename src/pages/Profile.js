@@ -83,6 +83,10 @@ function Profile() {
             toast.success("Listing has been deleted")
         }
     }
+
+    const handleEdit = async(listingid) => {
+        console.log("handleEdit function should run")
+    }
         
 
     return (
@@ -143,6 +147,7 @@ function Profile() {
                                 id={listing.id} 
                                 listing={listing.data}
                                 onDelete={()=>handleDelete(listing.id)}
+                                onEdit={()=>handleEdit(listing.id)}
                             />
                         ))}
                     </ul>
