@@ -1,4 +1,4 @@
-import { query, orderBy, where, collection, getDocs, limit } from "firebase/firestore"
+import { query, orderBy, where, collection, getDocs, limit, startAfter } from "firebase/firestore"
 import {db} from "../firebase.config"
 import { useState, useEffect } from "react"
 import { useParams } from "react-router-dom"
@@ -10,6 +10,7 @@ function Offers() {
 
     const [listings, setListings] = useState(null)
     const [loading, setLoading] = useState(true)
+    const [lastFetchedListing, setLastFetchedListing] = useState(null)
 
     const params = useParams()
 
@@ -25,6 +26,7 @@ function Offers() {
                     limit(10)
                 )
                 const querySnap = await getDocs(q)
+                const lastListing = querySnap.docs[querySnap.docs.length-1]
                 let listings = []
 
                 querySnap.forEach((doc) => {
@@ -33,6 +35,7 @@ function Offers() {
                         data: doc.data()
                     })
                 });
+                setLastFetchedListing(lastListing)
                 setListings(listings)
                 setLoading(false)
 
@@ -43,6 +46,33 @@ function Offers() {
 
         fetchListings()
     }, [params.categoryName])
+
+    const onLoadMore = async() => {
+        try {
+
+            const listingsRef = collection(db, 'listings')
+            const q = query(
+                listingsRef,
+                where('offer', '==', true), 
+                orderBy('timestamp', 'desc'), 
+                startAfter(lastFetchedListing),
+                limit(10)
+            )
+            const querySnap = await getDocs(q)
+            let listings = []
+
+            querySnap.forEach((doc) => {
+                return listings.push({
+                    id: doc.id, 
+                    data: doc.data()
+                })
+            });
+            setListings((prev)=> [...prev, ...listings])
+            setLoading(false)
+
+        } catch (error) {
+            toast.error("Could not fetch the data")
+        }}
 
     return(
         <div className="category">
@@ -59,6 +89,12 @@ function Offers() {
                             ))}
                         </ul>
                     </main>
+
+                    <br/>
+                    <br/>
+                    
+                    {lastFetchedListing && (<p className="loadMore" onClick={onLoadMore}> Load More </p>)}
+                    
                 </> : 
             <p> No offers at the moment </p>}
         </div>
