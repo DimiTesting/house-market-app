@@ -85,7 +85,7 @@ function Profile() {
     }
 
     const handleEdit = async(listingid) => {
-        console.log("handleEdit function should run")
+        navigate(`/edit-listing/${listingid}`)
     }
         
 
