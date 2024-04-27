@@ -2,6 +2,7 @@ import {BrowserRouter as Router, Routes, Route} from "react-router-dom"
 import {ToastContainer} from "react-toastify"
 import 'react-toastify/dist/ReactToastify.css';
 import NavBar from "./components/NavBar"
+import PrivateRoute from "./components/PrivateRoute";
 import Explore from "./pages/Explore"
 import ForgotPassword from "./pages/ForgotPassword"
 import Offers from "./pages/Offers"
@@ -9,8 +10,7 @@ import SignIn from "./pages/SignIn"
 import SignUp from "./pages/SignUp"
 import Profile from "./pages/Profile"
 import Category from "./pages/Category";
-import PrivateRoute from "./components/PrivateRoute";
-import CreateListing from "./components/CreateListing";
+import CreateListing from "./pages/CreateListing"
 import Listing from "./pages/Listing";
 import Contact from "./pages/Contact";
 import EditListing from "./pages/EditListing";
