@@ -3,7 +3,7 @@ import { getStorage, ref, uploadBytesResumable, getDownloadURL} from "firebase/s
 import { collection, serverTimestamp, addDoc } from "firebase/firestore"
 import { useEffect, useRef, useState } from "react"
 import { useNavigate } from "react-router-dom"
-import Spinner from "./Spinner"
+import Spinner from "../components/Spinner"
 import {toast} from "react-toastify"
 import { v4 as uuidv4 } from 'uuid'
 import {db} from "../firebase.config"
