@@ -1,13 +1,15 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
+import dotenv from "dotenv"
+dotenv.config()
 
 const firebaseConfig = {
-  apiKey: "AIzaSyAKSQqGwfjWkuAUrV26Q_qQ0SNYPIr3aTM",
+  apiKey: process.env.API_KEY,
   authDomain: "house-market-app-a8aa9.firebaseapp.com",
   projectId: "house-market-app-a8aa9",
   storageBucket: "house-market-app-a8aa9.appspot.com",
   messagingSenderId: "523885974962",
-  appId: "1:523885974962:web:4b027d30c98da92b4540ab"
+  appId: process.env.APP_ID
 };
 
 const app = initializeApp(firebaseConfig);
